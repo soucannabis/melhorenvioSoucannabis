@@ -165,7 +165,7 @@ async function fetchOrders(nextPage) {
 const app = express();
 app.use(express.json());
 
-app.get('/', async (req, res) => {
+app.post('/', async (req, res) => {
     try {
         await fetchOrders();
         res.status(200).send('Orders fetched successfully.');
