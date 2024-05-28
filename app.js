@@ -76,8 +76,8 @@ async function pipefyRequest(query) {
     return responseData.data;
 }
 console.log("Melhor Envio API")
-async function fetchOrders(nextPage) {   
-   
+async function fetchOrders(nextPage) {
+
     if (!nextPage) {
         nextPage = `${MELHOR_ENVIO_API_URL}?status=posted&page=${PAGE}`;
     }
@@ -95,7 +95,7 @@ async function fetchOrders(nextPage) {
             totalOrders: response.data.total,
         };
 
-        console.log("Página atual: "+ response.data.current_page)
+        console.log("Página atual: " + response.data.current_page)
 
         for (let index = 0; index < orders.length; index++) {
             const order = orders[index];
@@ -106,43 +106,44 @@ async function fetchOrders(nextPage) {
             orderData.tracking = order.tracking;
             orderData.name = order.to.name;
             orderData.phone = order.to.phone;
-            if(order.tags.length > 0){
-            orderData.cardid = order.tags[0].tag
-            }else{
+            if (order.tags.length > 0) {
+                orderData.cardid = order.tags[0].tag
+            } else {
                 orderData.cardid = null
             }
             orderData.infos = {
                 "name": orderData.name,
-                "cardid":orderData.cardid,
+                "cardid": orderData.cardid,
                 "pago": orderData.paid_at.split(" ")[0],
                 "postado": orderData.posted_at.split(" ")[0]
             }
 
             const phone = order.to.phone;
             const name = orderData.name
-  
-            if (verifyDate(orderData.posted_at)) {
-                console.log(orderData.infos)
-                   /*  await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to="+phone+"@c.us&msg=Olá "+name.split(" ")[0]+", viemos informar que seu pedido já foi enviado.%0A%0ASegue abaixo o link para consultar o andamento da sua entrega. %0A%0Ahttps://app.melhorrastreio.com.br/app/jadlog/"+orderData.tracking)
-                      await delay(1000);
-                      await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to="+phone+"@c.us&msg=A responsabilidade de acompanhar o rastreio, contactar a transportadora em caso de problema na entrega ou retirar o pedido na agência é do associado. %0A %0A Agradecemos e ficamos a disposição 🙏")
-                      console.log("Data postagem: "+orderData.posted_at+" --> Nome: "+orderData.name + " | " + orderData.phone+ " | " +  orderData.tracking)
-                      await log("Data postagem: "+orderData.posted_at+" --> Nome: "+orderData.name + " | " + orderData.phone+ " | " +  orderData.tracking);
-                      await delay(3000);
-     
-                     await pipefyRequest(
-                         'mutation {moveCardToPhase(input: {card_id: ' + orderData.cardid + ', destination_phase_id:311232364}) { clientMutationId} }',
-                     );
-                     await delay(1000)
-     
-                     await pipefyRequest(
-                         'mutation {moveCardToPhase(input: {card_id: ' + orderData.cardid + ', destination_phase_id:312818876}) { clientMutationId} }',
-                     );
-                     await delay(1000)
 
-                     await pipefyRequest(
-                        'mutation{ updateCardField(input:{ card_id: ' + orderData.cardid + ', field_id:"ol_segue_o_c_digo_de_rastreamento_do_seu_pedido", new_value:"https://app.melhorrastreio.com.br/app/jadlog/"+orderData.tracking }) { clientMutationId } }',
-                    );*/
+            if (verifyDate(orderData.posted_at)) {
+                await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=Olá " + name.split(" ")[0] + ", viemos informar que seu pedido já foi enviado.%0A%0ASegue abaixo o link para consultar o andamento da sua entrega. %0A%0Ahttps://app.melhorrastreio.com.br/app/jadlog/" + orderData.tracking)
+                await delay(1000);
+                await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=A responsabilidade de acompanhar o rastreio, contactar a transportadora em caso de problema na entrega ou retirar o pedido na agência é do associado. %0A %0A Agradecemos e ficamos a disposição 🙏")
+                console.log("Data postagem: " + orderData.posted_at + " --> Nome: " + orderData.name + " | " + orderData.phone + " | " + orderData.tracking)
+                await log("Data postagem: " + orderData.posted_at + " --> Nome: " + orderData.name + " | " + orderData.phone + " | " + orderData.tracking);
+                await delay(3000);
+
+                await pipefyRequest(
+                    'mutation {moveCardToPhase(input: {card_id: ' + orderData.cardid + ', destination_phase_id:311232364}) { clientMutationId} }',
+                );
+                await delay(1000)
+
+                await pipefyRequest(
+                    'mutation {moveCardToPhase(input: {card_id: ' + orderData.cardid + ', destination_phase_id:312818876}) { clientMutationId} }',
+                );
+                await delay(1000)
+
+                await pipefyRequest(
+                    'mutation{ updateCardField(input:{ card_id: ' + orderData.cardid + ', field_id:"ol_segue_o_c_digo_de_rastreamento_do_seu_pedido", new_value:"https://app.melhorrastreio.com.br/app/jadlog/"+orderData.tracking }) { clientMutationId } }',
+                );
+
+                await delay(1000)
 
             } else {
                 break
