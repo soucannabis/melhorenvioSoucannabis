@@ -140,7 +140,7 @@ async function fetchOrders(nextPage) {
                 await delay(1000)
 
                 await pipefyRequest(
-                    'mutation{ updateCardField(input:{ card_id: ' + orderData.cardid + ', field_id:"ol_segue_o_c_digo_de_rastreamento_do_seu_pedido", new_value:"https://app.melhorrastreio.com.br/app/jadlog/"+orderData.tracking }) { clientMutationId } }',
+                    'mutation{ updateCardField(input:{ card_id: ' + orderData.cardid + ', field_id:"ol_segue_o_c_digo_de_rastreamento_do_seu_pedido", new_value:"https://app.melhorrastreio.com.br/app/jadlog/'+orderData.tracking+'" }) { clientMutationId } }',
                 );
 
                 await delay(1000)
