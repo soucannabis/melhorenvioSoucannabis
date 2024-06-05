@@ -113,19 +113,23 @@ async function fetchOrders(nextPage) {
             }
             orderData.infos = {
                 "name": orderData.name,
-                "cardid": orderData.cardid,
-                "pago": orderData.paid_at.split(" ")[0],
-                "postado": orderData.posted_at.split(" ")[0]
+                "cardid": orderData.cardid
             }
+
+            orderData.service = order.service.company.name
+            var service = order.service.company.name
+            service = service.toLowerCase()
 
             const phone = order.to.phone;
             const name = orderData.name
 
             if (verifyDate(orderData.posted_at)) {
-                await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=Olá " + name.split(" ")[0] + ", viemos informar que seu pedido já foi enviado.%0A%0ASegue abaixo o link para consultar o andamento da sua entrega. %0A%0Ahttps://app.melhorrastreio.com.br/app/jadlog/" + orderData.tracking)
+
+                console.log("Data postagem: " + orderData.posted_at + " --> Nome: " + orderData.name + " | " + orderData.phone + " | " + orderData.tracking)
+
+                await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=Olá " + name.split(" ")[0] + ", viemos informar que seu pedido já foi enviado.%0A%0ASegue abaixo o link para consultar o andamento da sua entrega. %0A%0Ahttps://app.melhorrastreio.com.br/app/"+servcice+"/" + orderData.tracking)
                 await delay(1000);
                 await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=A responsabilidade de acompanhar o rastreio, contactar a transportadora em caso de problema na entrega ou retirar o pedido na agência é do associado. %0A %0A Agradecemos e ficamos a disposição 🙏")
-                console.log("Data postagem: " + orderData.posted_at + " --> Nome: " + orderData.name + " | " + orderData.phone + " | " + orderData.tracking)
                 await log("Data postagem: " + orderData.posted_at + " --> Nome: " + orderData.name + " | " + orderData.phone + " | " + orderData.tracking);
                 await delay(3000);
 
@@ -176,7 +180,7 @@ app.post('/', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-
+fetchOrders()
 app.listen(PORT, () => {
     console.log(`Servidor iniciado na porta ${PORT}`);
 });
