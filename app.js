@@ -79,7 +79,7 @@ console.log("Melhor Envio API")
 async function fetchOrders(nextPage) {
 
     if (!nextPage) {
-        nextPage = `${MELHOR_ENVIO_API_URL}?status=posted&page=${PAGE}`;
+        nextPage = `${MELHOR_ENVIO_API_URL}?page=${PAGE}`;
     }
     try {
         const response = await axios.get(nextPage, {
@@ -96,14 +96,14 @@ async function fetchOrders(nextPage) {
         };
 
         console.log("Página atual: " + response.data.current_page)
+        
 
         for (let index = 0; index < orders.length; index++) {
             const order = orders[index];
-
             const orderData = {};
             orderData.posted_at = order.posted_at;
             orderData.paid_at = order.paid_at;
-            orderData.tracking = order.tracking;
+            orderData.tracking = order.self_tracking;
             orderData.name = order.to.name;
             orderData.phone = order.to.phone;
             if (order.tags.length > 0) {
@@ -122,15 +122,14 @@ async function fetchOrders(nextPage) {
 
             const phone = order.to.phone;
             const name = orderData.name
+      
 
-            if (verifyDate(orderData.posted_at)) {
-
-                console.log("Data postagem: " + orderData.posted_at + " --> Nome: " + orderData.name + " | " + orderData.phone + " | " + orderData.tracking)
-
-                await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=Olá " + name.split(" ")[0] + ", viemos informar que seu pedido já foi enviado.%0A%0ASegue abaixo o link para consultar o andamento da sua entrega. %0A%0Ahttps://app.melhorrastreio.com.br/app/"+servcice+"/" + orderData.tracking)
+            if (verifyDate(orderData.paid_at)) {
+            
+                await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=Olá " + name.split(" ")[0] + ", viemos informar que seu pedido já foi enviado.%0A%0ASegue abaixo o link para consultar o andamento da sua entrega. %0A%0Ahttps://app.melhorrastreio.com.br/app/"+service+"/" + orderData.tracking)
                 await delay(1000);
                 await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=A responsabilidade de acompanhar o rastreio, contactar a transportadora em caso de problema na entrega ou retirar o pedido na agência é do associado. %0A %0A Agradecemos e ficamos a disposição 🙏")
-                await log("Data postagem: " + orderData.posted_at + " --> Nome: " + orderData.name + " | " + orderData.phone + " | " + orderData.tracking);
+                await log("Nome: " + orderData.name + " | " + orderData.phone + " | " + orderData.tracking);
                 await delay(3000);
 
                 await pipefyRequest(
@@ -179,7 +178,7 @@ app.post('/', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Servidor iniciado na porta ${PORT}`);
 });
