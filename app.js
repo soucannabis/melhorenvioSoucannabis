@@ -96,7 +96,7 @@ async function fetchOrders(nextPage) {
         };
 
         console.log("Página atual: " + response.data.current_page)
-        
+
 
         for (let index = 0; index < orders.length; index++) {
             const order = orders[index];
@@ -122,11 +122,11 @@ async function fetchOrders(nextPage) {
 
             const phone = order.to.phone;
             const name = orderData.name
-      
+
 
             if (verifyDate(orderData.paid_at)) {
-            
-                await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=Olá " + name.split(" ")[0] + ", viemos informar que seu pedido já foi enviado.%0A%0ASegue abaixo o link para consultar o andamento da sua entrega. %0A%0Ahttps://app.melhorrastreio.com.br/app/"+service+"/" + orderData.tracking)
+                console.log(" --> Nome: " + orderData.name + " | " + orderData.phone + " | " + orderData.tracking)
+                await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=Olá " + name.split(" ")[0] + ", viemos informar que seu pedido já foi enviado.%0A%0ASegue abaixo o link para consultar o andamento da sua entrega. %0A%0Ahttps://app.melhorrastreio.com.br/app/" + service + "/" + orderData.tracking)
                 await delay(1000);
                 await axios.get("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + phone + "@c.us&msg=A responsabilidade de acompanhar o rastreio, contactar a transportadora em caso de problema na entrega ou retirar o pedido na agência é do associado. %0A %0A Agradecemos e ficamos a disposição 🙏")
                 await log("Nome: " + orderData.name + " | " + orderData.phone + " | " + orderData.tracking);
@@ -143,7 +143,7 @@ async function fetchOrders(nextPage) {
                 await delay(1000)
 
                 await pipefyRequest(
-                    'mutation{ updateCardField(input:{ card_id: ' + orderData.cardid + ', field_id:"ol_segue_o_c_digo_de_rastreamento_do_seu_pedido", new_value:"https://app.melhorrastreio.com.br/app/jadlog/'+orderData.tracking+'" }) { clientMutationId } }',
+                    'mutation{ updateCardField(input:{ card_id: ' + orderData.cardid + ', field_id:"ol_segue_o_c_digo_de_rastreamento_do_seu_pedido", new_value:"https://app.melhorrastreio.com.br/app/jadlog/' + orderData.tracking + '" }) { clientMutationId } }',
                 );
 
                 await delay(1000)
