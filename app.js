@@ -236,13 +236,13 @@ app.post('/tracking', async (req, res) => {
                         <h1 class="mb-4">Informações do Rastreamento</h1>
                         <a href="https://app.melhorrastreio.com.br/app/melhorenvio/${trackingInfo.self_tracking}" target="_blank">https://app.melhorrastreio.com.br/app/melhorenvio/${trackingInfo.self_tracking}</a>
                         <ul class="list-group">
-                            <li class="list-group-item"><strong>ID:</strong> ${trackingInfo.id}</li>
-                            <li class="list-group-item"><strong>Protocolo:</strong> ${trackingInfo.protocol}</li>
-                            <li class="list-group-item"><strong>Status:</strong> ${trackingInfo.status}</li>
-                            <li class="list-group-item"><strong>Rastreamento:</strong> ${trackingInfo.tracking}</li>
-                            <li class="list-group-item"><strong>Nome do Destinatário:</strong> ${trackingInfo.to.name}</li>
+                        <li class="list-group-item"><strong>Nome do Destinatário:</strong> ${trackingInfo.to.name}</li>
                             <li class="list-group-item"><strong>Endereço do Destinatário:</strong> ${trackingInfo.to.address}, ${trackingInfo.to.location_number}, ${trackingInfo.to.district}, ${trackingInfo.to.city} - ${trackingInfo.to.state_abbr}, ${trackingInfo.to.postal_code}</li>
+                            <li class="list-group-item"><strong>Status:</strong> ${trackingInfo.status}</li>
+                            <li class="list-group-item"><strong>Rastreamento:</strong> ${trackingInfo.tracking}</li>                            
                             <li class="list-group-item"><strong>Data de Entrega:</strong> ${trackingInfo.delivered_at}</li>
+                             <li class="list-group-item"><strong>ID:</strong> ${trackingInfo.id}</li>
+                            <li class="list-group-item"><strong>Protocolo:</strong> ${trackingInfo.protocol}</li>
                         </ul>
                         <a href="/rastreamento" class="btn btn-primary mt-4">Voltar</a>
                     </div>
